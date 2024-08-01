@@ -1,0 +1,76 @@
+[user]
+	name = George Smith
+	email = georgerobertsmith@gmail.com
+[color]
+	ui = auto
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+  useHttpPath = true
+
+[alias]
+    # Basic shortcuts
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    df = diff
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+    # Merge and delete branch
+    md = "!f() { git merge $1 && git branch -d $1; }; f"
+
+    # Commit all, add message, and push
+    cap = "!f() { git add -A && git commit -m \"$1\" && git push; }; f"
+
+    # Undo last commit
+    undo = reset HEAD~1 --mixed
+
+    # Show changes in staged files
+    staged = diff --cached
+
+    # List all aliases
+    aliases = config --get-regexp alias
+
+    # Amend the currently staged files to the latest commit
+    amend = commit --amend --reuse-message=HEAD
+
+    # Interactive rebase with the given number of latest commits
+    reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+    # Find branches containing commit
+    fb = "!f() { git branch -a --contains $1; }; f"
+
+    # Find tags containing commit
+    ft = "!f() { git describe --always --contains $1; }; f"
+
+    # Find commits by source code
+    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+    # Find commits by commit message
+    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+    # Remove branches that have already been merged with main
+    # a.k.a. 'delete merged'
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+[core]
+    editor = nvim
+    whitespace = trailing-space,space-before-tab
+
+[diff]
+    tool = nvimdiff
+
+[merge]
+    tool = nvimdiff
+
+[push]
+    default = current
+[init]
+	defaultBranch = main
